@@ -1,0 +1,14 @@
+$TTL 1D
+@	IN SOA	@ {{ zimbra_domain }}. (
+				{{ zimbra_serial['stdout'] }}	; serial
+					1D	; refresh
+					1H	; retry
+					1W	; expire
+					3H )	; minimum
+	NS	@
+	A	{{ zimbra_ldap_ip }}
+	MX	1	{{ zimbra_mta_fqdn }}.
+{{ zimbra_ldap_shortname }}	A	{{ zimbra_ldap_ip }}
+{{ zimbra_mta_shortname }}	A	{{ zimbra_mta_ip }}
+{{ zimbra_proxy_shortname }}	A	{{ zimbra_proxy_ip }}
+{{ zimbra_mailbox_shortname }}	A	{{ zimbra_mailbox_ip }}
