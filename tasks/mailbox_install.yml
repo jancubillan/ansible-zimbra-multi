@@ -1,0 +1,105 @@
+---
+	- name: configure local dns
+		shell: >
+			nmcli con mod "{{ zimbra_network_name }}" ipv4.dns 127.0.0.1 &&
+			nmcli con reload &&
+			nmcli con up "{{ zimbra_network_name }}"
+
+	- name: configure chronyd
+		service:
+			name: chronyd
+			state: started
+			enabled: yes
+
+	- name: configure time zone
+		timezone:
+			name: "{{ zimbra_timezone }}"
+
+	- name: configure time sync
+		shell: timedatect set-ntp true
+
+	- name: restart chronyd
+		service:
+			name: chronyd
+			state: restarted
+
+	- name: configure hostname
+		hostname: "{{ zimbra_mailbox_fqdn }}"
+
+	- name: configure hosts file
+		lineinfile: "{{ zimbra_mailbox_ip }} {{ zimbra_mailbox_fqdn }} {{ zimbra_mailbox_shortname }}"
+		path: '/etc/hosts'
+
+	- name: install utilities
+		yum:
+			name:
+				- bash-completion
+				- tmux
+				- telnet
+				- bind-utils
+				- tcpdump
+				- wget
+				- lsof
+				- rsync
+			state: latest
+
+	- name: perform update
+		yum:
+			name: '*'
+			state: latest
+
+	-	name: configure firewall port
+		firewalld:
+			port: 7071/tcp
+			permanent: yes
+			state: enabled
+			immediate: yes
+
+	- name: configure firewall rich rule
+		firewalld:
+			rich_rule: rule family="ipv4" source address="192.168.122.0/24" accept
+			permanent: yes
+			state: enabled
+			immediate: yes
+
+	- name: disable postfix
+		service:
+			name: postfix
+			state: stopped
+			enabled: no
+
+	- name: install dependencies
+		yum:
+			name:
+				- perl
+				- net-tools
+		state: latest
+
+	- name: download zimbra installer
+		get_url:
+			url: https://files.zimbra.com/downloads/8.8.15_GA/zcs-8.8.15_GA_3869.RHEL7_64.20190918004220.tgz
+			dest: /tmp
+			checksum: sha256:https://files.zimbra.com/downloads/8.8.15_GA/zcs-8.8.15_GA_3869.RHEL7_64.20190918004220.tgz.sha256
+
+	- name: extract zimbra installer
+		unarchive:
+			src: zcs-8.8.15_GA_3869.RHEL7_64.20190918004220.tgz
+			dest: /tmp
+
+	- name: configure answer file
+		template:
+			src: mailbox_answers.j2
+			dest: /tmp/mailbox_answers.txt
+
+	- name: configure config file
+		template:
+			src: mailbox_config.j2
+			dest: /tmp/mailbox_config.txt
+
+	- name: run zimbra installer phase 1
+		shell: ./install.sh -s < /tmp/mailbox_answers.txt
+		args:
+			chdir: /tmp/zcs-8.8.15_GA_3869.RHEL7_64.20190918004220/
+
+	- name: run zimbra installer phase 2
+		shell: /opt/zimbra/libexec/zmsetup.pl -c /tmp/config.j2
