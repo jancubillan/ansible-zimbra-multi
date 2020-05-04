@@ -134,3 +134,24 @@
 
   - name: run zimbra installer phase 2
     shell: /opt/zimbra/libexec/zmsetup.pl -c /tmp/ldap_config.txt
+
+  - name: update ldap system password
+    shell: ./zmldappasswd "{{ zimbra_system_password }}"
+    args:
+      chdir: /opt/zimbra/bin
+    become: yes
+    become_user: zimbra
+
+  - name: update system passwords
+    shell: ./zmldappasswd "{{ item }}" "{{ zimbra_system_password }}"
+    args:
+      chdir: /opt/zimbra/bin
+    become: yes
+    become_user: zimbra
+    loop:
+      - -a
+      - -b
+      - -l
+      - -n
+      - -p
+      - -r

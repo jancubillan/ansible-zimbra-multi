@@ -1,7 +1,7 @@
 ---
   - name: configure local dns
     shell: >
-      nmcli con mod "{{ zimbra_network_name }}" ipv4.dns 127.0.0.1 &&
+      nmcli con mod "{{ zimbra_network_name }}" ipv4.dns "{{ zimbra_ldap_ip }}" &&
       nmcli con reload &&
       nmcli con up "{{ zimbra_network_name }}"
 
