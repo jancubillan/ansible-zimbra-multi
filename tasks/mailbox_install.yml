@@ -74,7 +74,7 @@
       name:
         - perl
         - net-tools
-    state: present
+      state: present
 
   - name: download zimbra installer
     get_url:
