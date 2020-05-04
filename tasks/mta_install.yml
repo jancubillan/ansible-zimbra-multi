@@ -57,9 +57,9 @@
       state: enabled
       immediate: yes
     loop:
-      - 25
-      - 465
-      - 587
+      - 25/tcp
+      - 465/tcp
+      - 587/tcp
 
   - name: configure firewall rich rule
     firewalld:
@@ -89,7 +89,8 @@
 
   - name: extract zimbra installer
     unarchive:
-      src: zcs-8.8.15_GA_3869.RHEL7_64.20190918004220.tgz
+      remote_src: yes
+      src: /tmp/zcs-8.8.15_GA_3869.RHEL7_64.20190918004220.tgz
       dest: /tmp
 
   - name: configure answer file
