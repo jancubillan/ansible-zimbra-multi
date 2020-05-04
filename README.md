@@ -28,8 +28,6 @@ Example Playbook
 
 Create an inventory file similar below:
 
-		# vi inventory
-
     [zimbra_ldap]
 		ldap.example.com ansible_host=192.168.122.111
 
@@ -43,8 +41,6 @@ Create an inventory file similar below:
 		mailbox.example.com ansible_host=192.168.122.114
 
 Create playbook similar below:
-
-		# vi site.yml
 
     - roles:
         - jancubillan.ansible_zimbra_multi
