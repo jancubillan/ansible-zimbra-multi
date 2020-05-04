@@ -52,7 +52,7 @@
 
   - name: configure firewall ports
     firewalld:
-      ports: "{{ item }}"
+      port: "{{ item }}"
       permanent: yes
       state: enabled
       immediate: yes

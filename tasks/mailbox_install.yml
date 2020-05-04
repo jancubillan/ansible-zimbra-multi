@@ -16,7 +16,7 @@
       name: "{{ zimbra_timezone }}"
 
   - name: configure time sync
-    shell: timedatect set-ntp true
+    shell: timedatectl set-ntp true
 
   - name: restart chronyd
     service:
