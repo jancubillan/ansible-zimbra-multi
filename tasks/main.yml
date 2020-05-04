@@ -3,7 +3,7 @@
   - name: generate serial
     shell: date +%Y%m%d01
     register: zimbra_serial
-    when: inventory_hostanme in groups['zimbra_ldap']
+    when: inventory_hostname in groups['zimbra_ldap']
 
   - name: capture random chars
     shell: date | md5sum | cut -c 1-9
