@@ -1,17 +1,27 @@
 ---
 # tasks file for ansible-zimbra-multi
-- name: import ldap_install.yml
-  import_tasks: ldap_install.yml
-  when: inventory_hostname in groups['zimbra_ldap']
+  - name: generate serial
+    shell: date +%Y%m%d01
+    register: zimbra_serial
+    when: inventory_hostanme in groups['zimbra_ldap']
 
-- name: import mta_install.yml
-  import_tasks: mta_install.yml
-  when: inventory_hostname in groups['zimbra_mta']
+  - name: capture random chars
+    shell: date | md5sum | cut -c 1-9
+    register: zimbra_random_chars
+    when: inventory_hostname in groups['zimbra_ldap']
 
-- name: import proxy_install.yml
-  import_tasks: proxy_install.yml
-  when: inventory_hostname in groups['zimbra_proxy']
+  - name: import ldap_install.yml
+    import_tasks: ldap_install.yml
+    when: inventory_hostname in groups['zimbra_ldap']
 
-- name: import mailbox_install.yml
-  import_tasks: mailbox_install.yml
-  when: inventory_hostname in groups['zimbra_proxy']
+  - name: import mta_install.yml
+    import_tasks: mta_install.yml
+    when: inventory_hostname in groups['zimbra_mta']
+
+  - name: import proxy_install.yml
+    import_tasks: proxy_install.yml
+    when: inventory_hostname in groups['zimbra_proxy']
+
+  - name: import mailbox_install.yml
+    import_tasks: mailbox_install.yml
+    when: inventory_hostname in groups['zimbra_mailbox']

@@ -1,12 +1,4 @@
 ---
-  - name: generate serial
-    shell: date +%Y%m%d01
-    register: zimbra_serial
-
-  - name: capture random chars
-    shell: date | md5sum | cut -c 1-9
-    register: zimbra_random_chars
-
   - name: configure chronyd
     service:
       name: chronyd

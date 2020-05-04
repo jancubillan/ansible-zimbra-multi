@@ -101,12 +101,12 @@
   - name: configure config file
     template:
       src: mta_config.j2
-      dest: /tmp/config.txt
+      dest: /tmp/mta_config.txt
 
   - name: run zimbra installer phase 1
     shell: ./install.sh -s < /tmp/mta_answers.txt
     args:
       chdir: /tmp/zcs-8.8.15_GA_3869.RHEL7_64.20190918004220/
 
-  - name: run installer phase 2
-    shell: /opt/zimbra/libexec/zmsetup.pl -c /tmp/config.txt
+  - name: run zimbra installer phase 2
+    shell: /opt/zimbra/libexec/zmsetup.pl -c /tmp/mta_config.txt
