@@ -1,4 +1,12 @@
 ---
+  - name: generate serial
+    shell: date +%Y%m%d01
+    register: zimbra_serial
+
+  - name: capture random chars
+    shell: date | md5sum | cut -c 1-9
+    register: zimbra_random_chars
+
   - name: configure chronyd
     service:
       name: chronyd
@@ -37,12 +45,12 @@
         - wget
         - lsof
         - rsync
-      state: latest
+      state: present
 
   - name: perform update
     yum:
       name: '*'
-      state: latest
+      state: present
 
   - name: configure firewall
     firewalld:
@@ -60,7 +68,7 @@
   - name: install bind
     yum:
       name: bind
-      state: latest
+      state: present
 
   - name: configure named.conf
     template:
@@ -103,7 +111,7 @@
       name:
         - perl
         - net-tools
-      state: latest
+      state: present
 
   - name: download zimbra installer
     get_url:

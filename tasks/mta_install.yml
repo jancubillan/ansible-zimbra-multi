@@ -29,7 +29,7 @@
 
   - name: configure hosts file
     lineinfile:
-      line: "{{ zimbra_mta_ip }} {{ zimbra_mta_fqdn }} {{zimbra_mta_shortname }}"
+      line: "{{ zimbra_mta_ip }} {{ zimbra_mta_fqdn }} {{ zimbra_mta_shortname }}"
       path: '/etc/hosts'
 
   - name: install utilities
@@ -43,12 +43,12 @@
         - wget
         - lsof
         - rsync
-      state: latest
+      state: present
 
   - name: perform update
     yum:
       name: '*'
-      state: latest
+      state: present
 
   - name: configure firewall ports
     firewalld:
@@ -79,7 +79,7 @@
       name:
         - perl
         - net-tools
-      state: latest
+      state: present
 
   - name: download zimbra installer
     get_url:
@@ -98,7 +98,7 @@
       dest: /tmp/mta_answers.txt
 
   - name: configure config file
-    tempalte: 
+    template:
       src: mta_config.j2
       dest: /tmp/config.txt
 
