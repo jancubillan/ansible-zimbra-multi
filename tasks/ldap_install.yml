@@ -63,7 +63,7 @@
     service:
       name: postfix
       state: stopped
-      enabeld: no
+      enabled: no
 
   - name: install bind
     yum:

@@ -29,7 +29,7 @@
 
   - name: configure hosts file
     lineinfile:
-      line: "{{ zimbra_proxy_ip {{ zimbra_proxy_fqdn }} {{ zimbra_proxy_shortname }}"
+      line: "{{ zimbra_proxy_ip }} {{ zimbra_proxy_fqdn }} {{ zimbra_proxy_shortname }}"
       path: '/etc/hosts'
 
   - name: install utilities
