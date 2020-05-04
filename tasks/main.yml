@@ -5,7 +5,7 @@
     register: zimbra_serial
 
   - name: capture random chars
-    shell: date +%Y%m%d%xyz
+    shell: date +%Y%m%dxyz
     register: zimbra_random_chars
 
   - name: import ldap_install.yml
