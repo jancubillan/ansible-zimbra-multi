@@ -10,7 +10,7 @@
   - name: configure chronyd
     service:
       name: chronyd
-      started: started
+      state: started
       enabled: yes
 
   - name: configure time zone

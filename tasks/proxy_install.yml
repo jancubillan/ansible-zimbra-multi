@@ -24,7 +24,8 @@
       state: restarted
 
   - name: configure hostname
-    hostname: "{{ zimbra_proxy_fqdn }}"
+    hostname: 
+      name: "{{ zimbra_proxy_fqdn }}"
 
   - name: configure hosts file
     lineinfile:
