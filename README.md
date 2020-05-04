@@ -29,16 +29,16 @@ Example Playbook
 Create an inventory file similar below:
 
     [zimbra_ldap]
-		ldap.example.com ansible_host=192.168.122.111
+    ldap.example.com ansible_host=192.168.122.111
 
-		[zimbra_mta]
-		mta.example.com ansible_host=192.168.122.112
+    [zimbra_mta]
+    mta.example.com ansible_host=192.168.122.112
 
-		[zimbra_proxy]
-		proxy.example.com ansible_host=192.168.122.113
+    [zimbra_proxy]
+    proxy.example.com ansible_host=192.168.122.113
 
-		[zimbra_mailbox]
-		mailbox.example.com ansible_host=192.168.122.114
+    [zimbra_mailbox]
+    mailbox.example.com ansible_host=192.168.122.114
 
 Create playbook similar below:
 
@@ -47,7 +47,7 @@ Create playbook similar below:
 
 Then run as follows:
 
-		# ansible-playbook -i inventory site.yml
+    # ansible-playbook -i inventory site.yml
 
 License
 -------
