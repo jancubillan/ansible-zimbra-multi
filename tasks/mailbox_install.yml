@@ -24,7 +24,8 @@
       state: restarted
 
   - name: configure hostname
-    hostname: "{{ zimbra_mailbox_fqdn }}"
+    hostname: 
+      name: "{{ zimbra_mailbox_fqdn }}"
 
   - name: configure hosts file
     lineinfile: 

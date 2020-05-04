@@ -22,5 +22,5 @@ zimbra_mailbox_ptr: 114
 zimbra_subnet: 192.168.122.0/24
 zimbra_forwarders: 8.8.8.8; 8.8.4.4;
 zimbra_domain: example.com
-zimbra_admin_password: ansible@zimbra2020
-zimbra_system_password: zimbra@ansible2020
+zimbra_admin_password: zimbra4ever
+zimbra_system_password: zimbra4ever
