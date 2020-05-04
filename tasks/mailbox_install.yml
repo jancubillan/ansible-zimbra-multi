@@ -27,8 +27,9 @@
     hostname: "{{ zimbra_mailbox_fqdn }}"
 
   - name: configure hosts file
-    lineinfile: "{{ zimbra_mailbox_ip }} {{ zimbra_mailbox_fqdn }} {{ zimbra_mailbox_shortname }}"
-    path: '/etc/hosts'
+    lineinfile: 
+      line: "{{ zimbra_mailbox_ip }} {{ zimbra_mailbox_fqdn }} {{ zimbra_mailbox_shortname }}"
+      path: '/etc/hosts'
 
   - name: install utilities
     yum:
