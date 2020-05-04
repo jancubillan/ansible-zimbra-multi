@@ -70,10 +70,6 @@
       group: named
       mode: 0640
 
-  - name: generate serial
-    shell: date +%Y%m%d01
-    register: zimbra_serial
-
   - name: configure forward zone
     template:
       src: domain.zone.j2
@@ -124,10 +120,6 @@
     template:
       src: ldap_answers.j2
       dest: /tmp/ldap_answers.txt
-
-  - name: capture random chars
-    shell: date | md5sum | cut -c 1-9
-    register: zimbra_random_chars
 
   - name: configure config file
     template:

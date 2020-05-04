@@ -26,11 +26,32 @@ Dependencies
 Example Playbook
 ----------------
 
-Copy the inventory and playbook at test/inventory and tests/site.yml. The playbook below should be similar.
+Create an inventory file similar below:
 
-    - hosts: server
-      roles:
-         - jancubillan.ansible_zimbra_multi
+		# vi inventory
+
+    [zimbra_ldap]
+		ldap.example.com ansible_host=192.168.122.111
+
+		[zimbra_mta]
+		mta.example.com ansible_host=192.168.122.112
+
+		[zimbra_proxy]
+		proxy.example.com ansible_host=192.168.122.113
+
+		[zimbra_mailbox]
+		mailbox.example.com ansible_host=192.168.122.114
+
+Create playbook similar below:
+
+		# vi site.yml
+
+    - roles:
+        - jancubillan.ansible_zimbra_multi
+
+Then run as follows:
+
+		# ansible-playbook -i inventory site.yml
 
 License
 -------

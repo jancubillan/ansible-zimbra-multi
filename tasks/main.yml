@@ -1,2 +1,37 @@
 ---
 # tasks file for ansible-zimbra-multi
+- name: install ldap
+  hosts: zimbra_ldap
+  
+	tasks:
+		- name: generate serial
+			shell: date +%Y%m%d01
+			register: zimbra_serial
+
+		- name: capture random cahrs
+			shell: date | md5sum | cut -c 1-9
+			register: zimbra_random_chars
+
+		- name: import ldap_install.yml
+			import_tasks: ldap_install.yml
+
+- name: install mta
+	hosts: zimbra_mta
+
+	tasks:
+		- name: import mta_install.yml
+			import_tasks: mta_install.yml
+
+- name: install proxy
+	hosts: zimbra_proxy
+
+	tasks:
+		- name: import proxy_install.yml
+			import_tasks: proxy_install.yml
+
+- name: install mailbox
+	hosts: zimbra_mailbox
+
+	tasks:
+		- name: import mailbox_install.yml
+			import_tasks: mailbox_install.yml
