@@ -3,12 +3,10 @@
   - name: generate serial
     shell: date +%Y%m%d01
     register: zimbra_serial
-    when: inventory_hostname in groups['zimbra_ldap']
 
   - name: capture random chars
-    shell: date | md5sum | cut -c 1-9
+    shell: date +%Y%m%d%xyz
     register: zimbra_random_chars
-    when: inventory_hostname in groups['zimbra_ldap']
 
   - name: import ldap_install.yml
     import_tasks: ldap_install.yml
