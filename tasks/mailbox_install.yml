@@ -24,11 +24,11 @@
       state: restarted
 
   - name: configure hostname
-    hostname: 
+    hostname:
       name: "{{ zimbra_mailbox_fqdn }}"
 
   - name: configure hosts file
-    lineinfile: 
+    lineinfile:
       line: "{{ zimbra_mailbox_ip }} {{ zimbra_mailbox_fqdn }} {{ zimbra_mailbox_shortname }}"
       path: '/etc/hosts'
 

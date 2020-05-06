@@ -25,7 +25,7 @@
     when: inventory_hostname in groups['zimbra_mailbox']
 
   - name: setup ldap ssh keys
-		shell: ./zmupdateauthkeys
+    shell: ./zmupdateauthkeys
     args:
       chdir: /opt/zimbra/bin
     become: yes
@@ -33,7 +33,7 @@
     when: inventory_hostname in groups['zimbra_ldap']
 
   - name: setup mta ssh keys
-		shell: ./zmupdateauthkeys
+    shell: ./zmupdateauthkeys
     args:
       chdir: /opt/zimbra/bin
     become: yes
@@ -41,7 +41,7 @@
     when: inventory_hostname in groups['zimbra_mta']
 
   - name: setup proxy ssh keys
-		shell: ./zmupdateauthkeys
+    shell: ./zmupdateauthkeys
     args:
       chdir: /opt/zimbra/bin
     become: yes
@@ -49,7 +49,7 @@
     when: inventory_hostname in groups['zimbra_proxy']
 
   - name: setup mailbox ssh keys
-		shell: ./zmupdateauthkeys
+    shell: ./zmupdateauthkeys
     args:
       chdir: /opt/zimbra/bin
     become: yes
