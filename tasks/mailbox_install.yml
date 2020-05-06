@@ -105,4 +105,4 @@
       chdir: /tmp/zcs-8.8.15_GA_3869.RHEL7_64.20190918004220/
 
   - name: run zimbra installer phase 2
-    shell: /opt/zimbra/libexec/zmsetup.pl -c /tmp/mailbox_config.j2
+    shell: /opt/zimbra/libexec/zmsetup.pl -c /tmp/mailbox_config.txt
