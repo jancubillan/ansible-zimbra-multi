@@ -106,3 +106,12 @@
 
   - name: run zimbra installer phase 2
     shell: /opt/zimbra/libexec/zmsetup.pl -c /tmp/mailbox_config.txt
+
+  - name: configure rsyslog.conf
+    template:
+      src: rsyslog.conf.j2
+      dest: /etc/rsyslog.conf
+      owner: root
+      group: root
+      mode: 0644
+    notify: restart rsyslog
