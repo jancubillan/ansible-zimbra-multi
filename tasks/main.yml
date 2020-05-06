@@ -23,3 +23,72 @@
   - name: import mailbox_install.yml
     import_tasks: mailbox_install.yml
     when: inventory_hostname in groups['zimbra_mailbox']
+
+  - name: setup ldap ssh keys
+		shell: ./zmupdateauthkeys
+    args:
+      chdir: /opt/zimbra/bin
+    become: yes
+    become_user: zimbra
+    when: inventory_hostname in groups['zimbra_ldap']
+
+  - name: setup mta ssh keys
+		shell: ./zmupdateauthkeys
+    args:
+      chdir: /opt/zimbra/bin
+    become: yes
+    become_user: zimbra
+    when: inventory_hostname in groups['zimbra_mta']
+
+  - name: setup proxy ssh keys
+		shell: ./zmupdateauthkeys
+    args:
+      chdir: /opt/zimbra/bin
+    become: yes
+    become_user: zimbra
+    when: inventory_hostname in groups['zimbra_proxy']
+
+  - name: setup mailbox ssh keys
+		shell: ./zmupdateauthkeys
+    args:
+      chdir: /opt/zimbra/bin
+    become: yes
+    become_user: zimbra
+    when: inventory_hostname in groups['zimbra_mailbox']
+
+  - name: enable statistics
+    shell: ./zmsyslogsetup
+    args:
+      chdir: /opt/zimbra/libexec
+
+  - name: restart zimbra mailbox
+    shell: ./zmcontrol restart
+    args:
+      chdir: /opt/zimbra/bin
+    become: yes
+    become_user: zimbra
+    when: inventory_hostname in groups['zimbra_mailbox']
+
+  - name: restart zimbra proxy
+    shell: ./zmcontrol restart
+    args:
+      chdir: /opt/zimbra/bin
+    become: yes
+    become_user: zimbra
+    when: inventory_hostname in groups['zimbra_proxy']
+
+  - name: restart zimbra mta
+    shell: ./zmcontrol restart
+    args:
+      chdir: /opt/zimbra/bin
+    become: yes
+    become_user: zimbra
+    when: inventory_hostname in groups['zimbra_mta']
+
+  - name: restart zimbra ldap
+    shell: ./zmcontrol restart
+    args:
+      chdir: /opt/zimbra/bin
+    become: yes
+    become_user: zimbra
+    when: inventory_hostname in groups['zimbra_ldap']
