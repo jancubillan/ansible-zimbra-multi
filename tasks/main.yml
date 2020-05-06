@@ -67,6 +67,7 @@
       chdir: /opt/zimbra/bin
     become: yes
     become_user: zimbra
+    become_flags: -i
     when: inventory_hostname in groups['zimbra_mailbox']
 
   - name: restart zimbra proxy
@@ -75,6 +76,7 @@
       chdir: /opt/zimbra/bin
     become: yes
     become_user: zimbra
+    become_flags: -i
     when: inventory_hostname in groups['zimbra_proxy']
 
   - name: restart zimbra mta
@@ -83,6 +85,7 @@
       chdir: /opt/zimbra/bin
     become: yes
     become_user: zimbra
+    become_flags: -i
     when: inventory_hostname in groups['zimbra_mta']
 
   - name: restart zimbra ldap
@@ -91,4 +94,5 @@
       chdir: /opt/zimbra/bin
     become: yes
     become_user: zimbra
+    become_flags: -i
     when: inventory_hostname in groups['zimbra_ldap']
