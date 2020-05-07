@@ -27,6 +27,12 @@ Create an inventory file similar below:
 
     # vi inventory
 
+    [zimbra_all:children]
+    zimbra_ldap
+    zimbra_mta
+    zimbra_proxy
+    zimbra_mailbox
+
     [zimbra_ldap]
     ldap.example.com ansible_host=192.168.122.111
 
