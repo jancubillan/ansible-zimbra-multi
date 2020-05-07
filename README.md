@@ -1,6 +1,3 @@
-WORK IN PROGRESS
-================
-
 ansible-zimbra-multi
 ====================
 
@@ -46,7 +43,9 @@ Create playbook similar below:
 
     # vi site.yml
 
-    - roles:
+    ---
+    - hosts: zimbra_all
+      roles:
         - jancubillan.ansible_zimbra_multi
 
 Then run as follows:
