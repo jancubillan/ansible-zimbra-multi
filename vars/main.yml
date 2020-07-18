@@ -9,7 +9,7 @@ zimbra_ldap_shortname: ldap
 zimbra_mta_shortname: mta
 zimbra_proxy_shortname: proxy
 zimbra_mailbox_shortname: mailbox
-zimbra_network_name: eth0
+zimbra_network_name: enp1s0
 zimbra_ldap_ip: 192.168.122.111
 zimbra_mta_ip: 192.168.122.112
 zimbra_proxy_ip: 192.168.122.113

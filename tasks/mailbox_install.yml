@@ -43,12 +43,14 @@
         - wget
         - lsof
         - rsync
+        - tar
+        - nmap-ncat
       state: present
 
   - name: perform update
     yum:
       name: '*'
-      state: present
+      state: latest
 
   - name: configure firewall port
     firewalld:
@@ -64,11 +66,17 @@
       state: enabled
       immediate: yes
 
+  - name: check postfix rpm
+    shell: rpm -q postfix
+    register: postfix_rpm
+    ignore_errors: yes
+
   - name: disable postfix
     service:
       name: postfix
       state: stopped
       enabled: no
+    when: postfix_rpm.rc == 0
 
   - name: install dependencies
     yum:
@@ -79,14 +87,14 @@
 
   - name: download zimbra installer
     get_url:
-      url: https://files.zimbra.com/downloads/8.8.15_GA/zcs-8.8.15_GA_3869.RHEL7_64.20190918004220.tgz
+      url: https://files.zimbra.com/downloads/8.8.15_GA/zcs-8.8.15_GA_3953.RHEL8_64.20200629025823.tgz
       dest: /tmp
-      checksum: sha256:https://files.zimbra.com/downloads/8.8.15_GA/zcs-8.8.15_GA_3869.RHEL7_64.20190918004220.tgz.sha256
+      checksum: sha256:https://files.zimbra.com/downloads/8.8.15_GA/zcs-8.8.15_GA_3953.RHEL8_64.20200629025823.tgz.sha256
 
   - name: extract zimbra installer
     unarchive:
       remote_src: yes
-      src: /tmp/zcs-8.8.15_GA_3869.RHEL7_64.20190918004220.tgz
+      src: /tmp/zcs-8.8.15_GA_3953.RHEL8_64.20200629025823.tgz
       dest: /tmp
 
   - name: configure answer file
@@ -102,7 +110,7 @@
   - name: run zimbra installer phase 1
     shell: ./install.sh -s < /tmp/mailbox_answers.txt
     args:
-      chdir: /tmp/zcs-8.8.15_GA_3869.RHEL7_64.20190918004220/
+      chdir: /tmp/zcs-8.8.15_GA_3953.RHEL8_64.20200629025823
 
   - name: run zimbra installer phase 2
     shell: /opt/zimbra/libexec/zmsetup.pl -c /tmp/mailbox_config.txt
