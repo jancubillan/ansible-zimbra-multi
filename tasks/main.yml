@@ -69,6 +69,7 @@
     become_user: zimbra
     become_flags: -i
     when: inventory_hostname in groups['zimbra_mailbox']
+    ignore_errors: yes
 
   - name: restart zimbra proxy
     shell: ./zmcontrol restart
@@ -78,6 +79,7 @@
     become_user: zimbra
     become_flags: -i
     when: inventory_hostname in groups['zimbra_proxy']
+    ignore_errors: yes
 
   - name: restart zimbra mta
     shell: ./zmcontrol restart
@@ -87,6 +89,7 @@
     become_user: zimbra
     become_flags: -i
     when: inventory_hostname in groups['zimbra_mta']
+    ignore_errors: yes
 
   - name: restart zimbra ldap
     shell: ./zmcontrol restart
@@ -96,3 +99,4 @@
     become_user: zimbra
     become_flags: -i
     when: inventory_hostname in groups['zimbra_ldap']
+    ignore_errors: yes

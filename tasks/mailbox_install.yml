@@ -123,3 +123,6 @@
       group: root
       mode: 0644
     notify: restart rsyslog
+
+  - name: run handlers
+    meta: flush_handlers
