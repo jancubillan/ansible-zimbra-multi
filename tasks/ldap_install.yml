@@ -116,14 +116,14 @@
   - name: download zimbra installer
     get_url:
       url: https://files.zimbra.com/downloads/8.8.15_GA/zcs-8.8.15_GA_3953.RHEL8_64.20200629025823.tgz
-      dest: /tmp
+      dest: /root
       checksum: sha256:https://files.zimbra.com/downloads/8.8.15_GA/zcs-8.8.15_GA_3953.RHEL8_64.20200629025823.tgz.sha256
 
   - name: extract zimbra installer
     unarchive:
       remote_src: yes
-      src: /tmp/zcs-8.8.15_GA_3953.RHEL8_64.20200629025823.tgz
-      dest: /tmp
+      src: /root/zcs-8.8.15_GA_3953.RHEL8_64.20200629025823.tgz
+      dest: /root
 
   - name: configure answer file
     template:
@@ -138,7 +138,7 @@
   - name: run zimbra installer phase 1
     shell: ./install.sh -s < /tmp/ldap_answers.txt
     args:
-      chdir: /tmp/zcs-8.8.15_GA_3953.RHEL8_64.20200629025823
+      chdir: /root/zcs-8.8.15_GA_3953.RHEL8_64.20200629025823
 
   - name: run zimbra installer phase 2
     shell: /opt/zimbra/libexec/zmsetup.pl -c /tmp/ldap_config.txt
