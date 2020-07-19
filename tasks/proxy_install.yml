@@ -110,6 +110,14 @@
       src: proxy_answers.j2
       dest: /tmp/proxy_answers.txt
 
+  - name: capture mailboxd memory
+    shell: free -m | awk 'NR==2{printf "%.0f\n", $2*0.25 }'
+    register: zimbra_mailboxd_memory
+
+  - name: capture system memory
+    shell: free -h | awk 'NR==2{printf "%.0f\n", $2 }'
+    register: zimbra_system_memory
+
   - name: configure config file
     template:
       src: proxy_config.j2
