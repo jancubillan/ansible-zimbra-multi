@@ -61,7 +61,7 @@
 
   - name: configure firewall rich rule
     firewalld:
-      rich_rule: rule family="ipv4" source address="192.168.122.0/24" accept
+      rich_rule: rule family="ipv4" source address="{{ zimbra_subnet }}" accept
       permanent: yes
       state: enabled
       immediate: yes
