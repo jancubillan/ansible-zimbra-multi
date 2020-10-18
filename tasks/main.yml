@@ -1,102 +1,102 @@
 ---
 # tasks file for ansible-zimbra-multi
-  - name: generate serial
-    shell: date +%Y%m%d01
-    register: zimbra_serial
+- name: generate serial
+  shell: date +%Y%m%d01
+  register: zimbra_serial
 
-  - name: capture random chars
-    shell: date +%Y%m%dxyz
-    register: zimbra_random_chars
+- name: capture random chars
+  shell: date +%Y%m%dxyz
+  register: zimbra_random_chars
 
-  - name: import ldap_install.yml
-    import_tasks: ldap_install.yml
-    when: inventory_hostname in groups['zimbra_ldap']
+- name: import ldap_install.yml
+  import_tasks: ldap_install.yml
+  when: inventory_hostname in groups['zimbra_ldap']
 
-  - name: import mta_install.yml
-    import_tasks: mta_install.yml
-    when: inventory_hostname in groups['zimbra_mta']
+- name: import mta_install.yml
+  import_tasks: mta_install.yml
+  when: inventory_hostname in groups['zimbra_mta']
 
-  - name: import proxy_install.yml
-    import_tasks: proxy_install.yml
-    when: inventory_hostname in groups['zimbra_proxy']
+- name: import proxy_install.yml
+  import_tasks: proxy_install.yml
+  when: inventory_hostname in groups['zimbra_proxy']
 
-  - name: import mailbox_install.yml
-    import_tasks: mailbox_install.yml
-    when: inventory_hostname in groups['zimbra_mailbox']
+- name: import mailbox_install.yml
+  import_tasks: mailbox_install.yml
+  when: inventory_hostname in groups['zimbra_mailbox']
 
-  - name: setup ldap ssh keys
-    shell: ./zmupdateauthkeys
-    args:
-      chdir: /opt/zimbra/bin
-    become: yes
-    become_user: zimbra
-    when: inventory_hostname in groups['zimbra_ldap']
+- name: setup ldap ssh keys
+  shell: ./zmupdateauthkeys
+  args:
+    chdir: /opt/zimbra/bin
+  become: yes
+  become_user: zimbra
+  when: inventory_hostname in groups['zimbra_ldap']
 
-  - name: setup mta ssh keys
-    shell: ./zmupdateauthkeys
-    args:
-      chdir: /opt/zimbra/bin
-    become: yes
-    become_user: zimbra
-    when: inventory_hostname in groups['zimbra_mta']
+- name: setup mta ssh keys
+  shell: ./zmupdateauthkeys
+  args:
+    chdir: /opt/zimbra/bin
+  become: yes
+  become_user: zimbra
+  when: inventory_hostname in groups['zimbra_mta']
 
-  - name: setup proxy ssh keys
-    shell: ./zmupdateauthkeys
-    args:
-      chdir: /opt/zimbra/bin
-    become: yes
-    become_user: zimbra
-    when: inventory_hostname in groups['zimbra_proxy']
+- name: setup proxy ssh keys
+  shell: ./zmupdateauthkeys
+  args:
+    chdir: /opt/zimbra/bin
+  become: yes
+  become_user: zimbra
+  when: inventory_hostname in groups['zimbra_proxy']
 
-  - name: setup mailbox ssh keys
-    shell: ./zmupdateauthkeys
-    args:
-      chdir: /opt/zimbra/bin
-    become: yes
-    become_user: zimbra
-    when: inventory_hostname in groups['zimbra_mailbox']
+- name: setup mailbox ssh keys
+  shell: ./zmupdateauthkeys
+  args:
+    chdir: /opt/zimbra/bin
+  become: yes
+  become_user: zimbra
+  when: inventory_hostname in groups['zimbra_mailbox']
 
-  - name: enable statistics
-    shell: ./zmsyslogsetup
-    args:
-      chdir: /opt/zimbra/libexec
+- name: enable statistics
+  shell: ./zmsyslogsetup
+  args:
+    chdir: /opt/zimbra/libexec
 
-  - name: restart zimbra mailbox
-    shell: ./zmcontrol restart
-    args:
-      chdir: /opt/zimbra/bin
-    become: yes
-    become_user: zimbra
-    become_flags: -i
-    when: inventory_hostname in groups['zimbra_mailbox']
-    ignore_errors: yes
+- name: restart zimbra mailbox
+  shell: ./zmcontrol restart
+  args:
+    chdir: /opt/zimbra/bin
+  become: yes
+  become_user: zimbra
+  become_flags: -i
+  when: inventory_hostname in groups['zimbra_mailbox']
+  ignore_errors: yes
 
-  - name: restart zimbra proxy
-    shell: ./zmcontrol restart
-    args:
-      chdir: /opt/zimbra/bin
-    become: yes
-    become_user: zimbra
-    become_flags: -i
-    when: inventory_hostname in groups['zimbra_proxy']
-    ignore_errors: yes
+- name: restart zimbra proxy
+  shell: ./zmcontrol restart
+  args:
+    chdir: /opt/zimbra/bin
+  become: yes
+  become_user: zimbra
+  become_flags: -i
+  when: inventory_hostname in groups['zimbra_proxy']
+  ignore_errors: yes
 
-  - name: restart zimbra mta
-    shell: ./zmcontrol restart
-    args:
-      chdir: /opt/zimbra/bin
-    become: yes
-    become_user: zimbra
-    become_flags: -i
-    when: inventory_hostname in groups['zimbra_mta']
-    ignore_errors: yes
+- name: restart zimbra mta
+  shell: ./zmcontrol restart
+  args:
+    chdir: /opt/zimbra/bin
+  become: yes
+  become_user: zimbra
+  become_flags: -i
+  when: inventory_hostname in groups['zimbra_mta']
+  ignore_errors: yes
 
-  - name: restart zimbra ldap
-    shell: ./zmcontrol restart
-    args:
-      chdir: /opt/zimbra/bin
-    become: yes
-    become_user: zimbra
-    become_flags: -i
-    when: inventory_hostname in groups['zimbra_ldap']
-    ignore_errors: yes
+- name: restart zimbra ldap
+  shell: ./zmcontrol restart
+  args:
+    chdir: /opt/zimbra/bin
+  become: yes
+  become_user: zimbra
+  become_flags: -i
+  when: inventory_hostname in groups['zimbra_ldap']
+  ignore_errors: yes
