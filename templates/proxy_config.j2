@@ -22,7 +22,7 @@ INSTALL_WEBAPPS="zimlet"
 JAVAHOME="/opt/zimbra/common/lib/jvm/java"
 LDAPDEFAULTSLOADED="1"
 {% for host in groups['zimbra_ldap'] %}
-LDAPHOST="{{ hostvars[host]['ansible_fqdn'] }}" 
+LDAPHOST="{{ hostvars[host]['ansible_fqdn'] }}"
 {% endfor %}
 LDAPPORT="389"
 MAILBOXDMEMORY="{{ zimbra_mailboxd_memory['stdout'] }}"
