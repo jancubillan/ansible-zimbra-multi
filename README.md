@@ -23,7 +23,7 @@ Role Variables
     zimbra_mta_fqdn: mta.example.com
     zimbra_proxy_fqdn: proxy.example.com
     zimbra_mailbox_fqdn: mailbox.example.com
-    zimbra_admin_password: redhat
+    zimbra_admin_password: ansible@zimbra2020
 
 Example Playbook
 ----------------
