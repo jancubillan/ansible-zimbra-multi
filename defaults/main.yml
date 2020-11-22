@@ -1,2 +1,8 @@
 ---
 # defaults file for ansible-zimbra-multi
+zimbra_timezone: Asia/Singapore
+zimbra_ldap_fqdn: ldap.example.com
+zimbra_mta_fqdn: mta.example.com
+zimbra_proxy_fqdn: proxy.example.com
+zimbra_mailbox_fqdn: mailbox.example.com
+zimbra_admin_password: redhat
