@@ -6,19 +6,24 @@ This role automates the process of installing multi-server Zimbra Open Source Ed
 Requirements
 ------------
 
-1. Must be a fresh CentOS 8 minimal installation
-2. Static network configuration must be already set
+1) Must be a fresh CentOS 8 minimal installation
+2) Ansible control node must have the "netaddr" Python module installed
+
+Installing Ansible and "netaddr" module using PIP
+-------------------------------------------------
+
+    # python3 -m pip install ansible
+    # python3 -m pip install netaddr
 
 Role Variables
 --------------
 
-Modify the variables in vars/main.yml to suit your environment
-
-Dependencies
-------------
-
-1. Static Networking
-2. Ansible Engine
+    zimbra_timezone: Asia/Singapore
+    zimbra_ldap_fqdn: ldap.example.com
+    zimbra_mta_fqdn: mta.example.com
+    zimbra_proxy_fqdn: proxy.example.com
+    zimbra_mailbox_fqdn: mailbox.example.com
+    zimbra_admin_password: ansible@zimbra2020
 
 Example Playbook
 ----------------
@@ -34,29 +39,36 @@ Create an inventory file similar below:
     zimbra_mailbox
 
     [zimbra_ldap]
-    ldap.example.com ansible_host=192.168.122.111
+    192.168.122.111
 
     [zimbra_mta]
-    mta.example.com ansible_host=192.168.122.112
+    192.168.122.112
 
     [zimbra_proxy]
-    proxy.example.com ansible_host=192.168.122.113
+    192.168.122.113
 
     [zimbra_mailbox]
-    mailbox.example.com ansible_host=192.168.122.114
+    192.168.122.114
 
 Create playbook similar below:
 
     # vi site.yml
 
-    ---
+    --- 
     - hosts: zimbra_all
+      vars:
+        zimbra_timezone: Asia/Singapore
+        zimbra_ldap_fqdn: ldap.example.com
+        zimbra_mta_fqdn: mta.example.com
+        zimbra_proxy_fqdn: proxy.example.com
+        zimbra_mailbox_fqdn: mailbox.example.com
+        zimbra_admin_password: ansible@zimbra2020
       roles:
-        - jancubillan.ansible_zimbra_multi
+        - ansible-zimbra-multi
 
 Then run as follows:
 
-    # ansible-playbook -i inventory site.yml
+    # ansible-playbook site.yml
 
 License
 -------
@@ -68,4 +80,3 @@ Author Information
 
 Author: Jan Cubillan<br>
 GitHub: https://github.com/jancubillan<br>
-Ansible Galaxy: https://galaxy.ansible.com/jancubillan

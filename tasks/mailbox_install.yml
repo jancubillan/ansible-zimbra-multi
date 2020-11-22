@@ -1,56 +1,10 @@
 ---
-- name: configure local dns
+- name: configure local dns 
   shell: >
-    nmcli con mod "{{ zimbra_network_name }}" ipv4.dns "{{ zimbra_ldap_ip }}" &&
+    nmcli con mod "{{ ansible_default_ipv4.interface }}" ipv4.dns "{{ hostvars[item]['ansible_default_ipv4']['address'] }}" &&
     nmcli con reload &&
-    nmcli con up "{{ zimbra_network_name }}"
-
-- name: configure chronyd
-  service:
-    name: chronyd
-    state: started
-    enabled: yes
-
-- name: configure time zone
-  timezone:
-    name: "{{ zimbra_timezone }}"
-
-- name: configure time sync
-  shell: timedatectl set-ntp true
-
-- name: restart chronyd
-  service:
-    name: chronyd
-    state: restarted
-
-- name: configure hostname
-  hostname:
-    name: "{{ zimbra_mailbox_fqdn }}"
-
-- name: configure hosts file
-  lineinfile:
-    line: "{{ zimbra_mailbox_ip }} {{ zimbra_mailbox_fqdn }} {{ zimbra_mailbox_shortname }}"
-    path: '/etc/hosts'
-
-- name: install utilities
-  yum:
-    name:
-      - bash-completion
-      - tmux
-      - telnet
-      - bind-utils
-      - tcpdump
-      - wget
-      - lsof
-      - rsync
-      - tar
-      - nmap-ncat
-    state: present
-
-- name: perform update
-  yum:
-    name: '*'
-    state: latest
+    nmcli con up "{{ ansible_default_ipv4.interface }}"
+  loop: "{{ groups['zimbra_ldap'] }}"
 
 - name: configure firewall port
   firewalld:
@@ -58,32 +12,6 @@
     permanent: yes
     state: enabled
     immediate: yes
-
-- name: configure firewall rich rule
-  firewalld:
-    rich_rule: rule family="ipv4" source address="{{ zimbra_subnet }}" accept
-    permanent: yes
-    state: enabled
-    immediate: yes
-
-- name: check postfix rpm
-  shell: rpm -q postfix
-  register: postfix_rpm
-  ignore_errors: yes
-
-- name: disable postfix
-  service:
-    name: postfix
-    state: stopped
-    enabled: no
-  when: postfix_rpm.rc == 0
-
-- name: install dependencies
-  yum:
-    name:
-      - perl
-      - net-tools
-    state: present
 
 - name: download zimbra installer
   get_url:

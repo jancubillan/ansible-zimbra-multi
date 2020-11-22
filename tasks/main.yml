@@ -1,12 +1,114 @@
 ---
 # tasks file for ansible-zimbra-multi
-- name: generate serial
-  shell: date +%Y%m%d01
-  register: zimbra_serial
+- name: configure static networking
+  shell: >
+    nmcli con mod "{{ ansible_default_ipv4.interface }}" ipv4.method manual ipv4.addresses "{{ (ansible_default_ipv4.address + '/' + ansible_default_ipv4.netmask) | ansible.netcommon.ipaddr('host/prefix') }}" ipv4.gateway "{{ ansible_default_ipv4.gateway }}" &&
+    nmcli con mod "{{ ansible_default_ipv4.interface }}" ipv4.dns "{{ ansible_dns.nameservers|join(' ') }}" &&
+    nmcli con reload &&
+    nmcli con up "{{ ansible_default_ipv4.interface }}"
 
-- name: capture random chars
-  shell: date +%Y%m%dxyz
-  register: zimbra_random_chars
+- name: install utilities and dependencies
+  yum:
+    name:
+      - bash-completion
+      - tmux
+      - telnet
+      - bind-utils
+      - tcpdump
+      - wget
+      - lsof
+      - rsync
+      - tar
+      - nmap-ncat
+      - chrony
+      - perl
+      - net-tools
+    state: present
+
+- name: perform update
+  yum:
+    name: '*'
+    state: latest
+
+- name: configure chronyd
+  service:
+    name: chronyd
+    state: started
+    enabled: yes
+
+- name: configure time zone
+  community.general.timezone:
+    name: "{{ zimbra_timezone }}"
+
+- name: configure time sync
+  shell: timedatectl set-ntp true
+
+- name: restart chronyd
+  service:
+    name: chronyd
+    state: restarted
+
+- name: configure ldap hostname
+  hostname:
+    name: "{{ zimbra_ldap_fqdn }}"
+  when: inventory_hostname in groups['zimbra_ldap']
+
+- name: configure mta hostname
+  hostname:
+    name: "{{ zimbra_mta_fqdn }}"
+  when: inventory_hostname in groups['zimbra_mta']
+
+- name: configure proxy hostname
+  hostname:
+    name: "{{ zimbra_proxy_fqdn }}"
+  when: inventory_hostname in groups['zimbra_proxy']
+
+- name: configure mailbox hostname
+  hostname:
+    name: "{{ zimbra_mailbox_fqdn }}"
+  when: inventory_hostname in groups['zimbra_mailbox']
+
+- name: capture random chars 1
+  shell: date | md5sum | cut -c 1-9 
+  register: zimbra_random_chars_1
+  when: inventory_hostname in groups['zimbra_ldap']
+
+- name: wait 3 seconds
+  pause:
+    seconds: 3
+  when: inventory_hostname in groups['zimbra_ldap']
+
+- name: capture random chars 2
+  shell: date | md5sum | cut -c 1-14
+  register: zimbra_random_chars_2
+  when: inventory_hostname in groups['zimbra_ldap']
+
+- name: gather facts
+  setup:
+
+- name: configure hosts file
+  lineinfile:
+    line: "{{ ansible_default_ipv4.address }} {{ ansible_fqdn }} {{ ansible_hostname }}"
+    path: '/etc/hosts'
+
+- name: configure firewall
+  ansible.posix.firewalld:
+    rich_rule: rule family="ipv4" source address="{{ (ansible_default_ipv4.network + '/' + ansible_default_ipv4.netmask) | ansible.netcommon.ipaddr('net') }}" accept
+    permanent: yes
+    state: enabled
+    immediate: yes
+
+- name: check postfix rpm
+  shell: rpm -q postfix
+  register: postfix_rpm
+  ignore_errors: yes
+
+- name: disable postfix
+  service:
+    name: postfix
+    state: stopped
+    enabled: no
+  when: postfix_rpm.rc ==0
 
 - name: import ldap_install.yml
   import_tasks: ldap_install.yml
