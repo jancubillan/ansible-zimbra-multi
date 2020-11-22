@@ -98,17 +98,15 @@
     state: enabled
     immediate: yes
 
-- name: check postfix rpm
-  shell: rpm -q postfix
-  register: postfix_rpm
-  ignore_errors: yes
+- name: gather package facts
+  package_facts:
 
 - name: disable postfix
   service:
     name: postfix
     state: stopped
     enabled: no
-  when: postfix_rpm.rc ==0
+  when: "'postfix' in ansible_facts.packages"
 
 - name: import ldap_install.yml
   import_tasks: ldap_install.yml
