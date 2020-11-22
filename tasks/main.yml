@@ -25,10 +25,10 @@
       - net-tools
     state: present
 
-#- name: perform update
-#  yum:
-#    name: '*'
-#    state: latest
+- name: perform update
+  yum:
+    name: '*'
+    state: latest
 
 - name: configure chronyd
   service:
