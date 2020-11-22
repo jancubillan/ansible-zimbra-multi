@@ -7,7 +7,7 @@
   loop: "{{ groups['zimbra_ldap'] }}"
 
 - name: configure firewall ports
-  firewalld:
+  ansible.posix.firewalld:
     port: "{{ item }}"
     permanent: yes
     state: enabled
